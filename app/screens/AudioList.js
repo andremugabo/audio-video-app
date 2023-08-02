@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { Text, ScrollView, StyleSheet, Dimensions, View } from "react-native";
 import { AudioContext } from "../context/AudioProvider";
 import { RecyclerListView, LayoutProvider } from "recyclerlistview";
+import AudioListItem from "../components/AudioListItem";
+import Screen from "../components/Screen";
 export class AudioList extends Component {
   static contextType = AudioContext;
   layoutProvider = new LayoutProvider(
@@ -21,7 +23,16 @@ export class AudioList extends Component {
 
   rowRenderer = (type, item) => {
     console.log(item);
-    return <Text>{item.filename}</Text>;
+    // return <Text>{item.filename}</Text>;
+    return (
+      <AudioListItem
+        title={item.filename}
+        duration={item.duration}
+        onOptionPress={() => {
+          console.log("opening option");
+        }}
+      />
+    );
   };
   render() {
     return (
@@ -42,13 +53,13 @@ export class AudioList extends Component {
       <AudioContext.Consumer>
         {({ dataProvider }) => {
           return (
-            <View style={{ flex: 1 }}>
+            <Screen>
               <RecyclerListView
                 dataProvider={dataProvider}
                 layoutProvider={this.layoutProvider}
                 rowRenderer={this.rowRenderer}
               />
-            </View>
+            </Screen>
           );
         }}
       </AudioContext.Consumer>
